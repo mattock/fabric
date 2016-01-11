@@ -11,6 +11,14 @@ def getisotime():
     return ct.strftime("%Y%m%d%H%M")
 
 @task
+def show_boot_partition_info():
+    """Show information about the /boot partition, if any"""
+    with hide("everything"), settings(warn_only=True):
+        if run("mount|grep \" /boot \"").succeeded:
+            with show("output"):
+                run("df -h|grep -E '(^Filesystem|^.* /boot$)'")
+
+@task
 def set_clock():
     """Set clock on the server using ntpdate"""
     import package

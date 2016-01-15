@@ -38,11 +38,11 @@ def download_and_install(url, package_name=None, proxy_url=None):
             sudo(vars.os.package_local_install_cmd % package_file)
 
 @task
-def install(package):
+def install(package, force=False):
     """Install a package from the repositories"""
     import vars
     vars = vars.Vars()
-    if not is_installed(package):
+    if not is_installed(package) or force:
         sudo(vars.os.package_refresh_cmd)
         sudo(vars.os.package_install_cmd % package)
 
